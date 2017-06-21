@@ -5,9 +5,9 @@ import java.util.Date;
 public class SensorTemperatura {
 
 	private Integer id;
-	private String description;
+	private String descripcion;
 	private Double valor;
-	private Double valorMin;
+	private Double valorSet;
 	private Date timestamp;
 	
 	public SensorTemperatura(){
@@ -16,12 +16,13 @@ public class SensorTemperatura {
 
 	
 
-	public SensorTemperatura(Integer id, String description, Double valor, Double valorMin) {
+	public SensorTemperatura(Integer id, String description, Double valor, Double valorSet) {
 		this();
 		this.id = id;
-		this.description = description;
-		this.valor = valor;
-		this.valorMin = valorMin;
+		this.descripcion = description;
+		this.valorSet = valor;
+		this.valorSet = valorSet;
+		this.timestamp = new Date();
 
 	}
 
@@ -35,29 +36,29 @@ public class SensorTemperatura {
 		this.id = id;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescripcion(String description) {
+		this.descripcion = description;
 	}
 
 	public Double getValor() {
-		return valor;
+		return valorSet;
 	}
 
 	public void setValor(Double valor) {
-		this.valor = valor;
+		this.valorSet = valor;
 	}
 
 
-	public Double getValorMin() {
-		return valorMin;
+	public Double getValorSet() {
+		return valorSet;
 	}
 
-	public void setValorMin(Double valorMin) {
-		this.valorMin = valorMin;
+	public void setValorSet(Double valorSet) {
+		this.valorSet = valorSet;
 	}
 
 	public Date getTimestamp() {
@@ -68,11 +69,16 @@ public class SensorTemperatura {
 		this.timestamp = timestamp;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "SensorTemperatura [id=" + id + ", description=" + description + ", valor=" + valor + ", valorMin="
-				+ valorMin + ", timestamp=" + timestamp + "]";
+		return "SensorTemperatura [id=" + id + ", descripcion=" + descripcion + ", valor=" + valor + ", valorSet="
+				+ valorSet + ", timestamp=" + timestamp + "]";
 	}
+
+	
+	
 
 	
 

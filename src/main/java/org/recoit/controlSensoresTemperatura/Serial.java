@@ -4,7 +4,7 @@ import com.fazecast.jSerialComm.SerialPort;
 
 public class Serial implements Runnable {
 	
-	private String port = "/dev/pts/2";
+	private String port = "/dev/pts/3";
 	SerialPort comPort;
 	
 	public Serial(){
