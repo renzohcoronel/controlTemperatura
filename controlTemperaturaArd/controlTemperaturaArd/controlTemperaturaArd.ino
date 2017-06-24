@@ -59,8 +59,6 @@ void setup() {
   pinMode(RELAY1,OUTPUT);
   pinMode(RELAY2,OUTPUT);
   pinMode(RELAY3,OUTPUT);
-
-  EEPROM.put(0,sensorSetting);
   EEPROM.get(0,sensorSetting);
 
  
@@ -87,7 +85,7 @@ void loop() {
               }
           }  
           
-    JsonObject& jsonObjectSensor1 = root.createNestedObject("");
+    JsonObject& jsonObjectSensor1 = root.createNestedObject("s1");
     jsonObjectSensor1["id"] = sensorSetting.sensor1;
     jsonObjectSensor1["descripcion"] = sensorSetting.descripcion1;
     jsonObjectSensor1["valor"] = sensorSetting.valor1;
@@ -106,7 +104,7 @@ void loop() {
             }
        } 
 
-    JsonObject& jsonObjectSensor2 = root.createNestedObject("");
+    JsonObject& jsonObjectSensor2 = root.createNestedObject("s2");
     jsonObjectSensor2["id"] = sensorSetting.sensor2;
     jsonObjectSensor2["descripcion"] = sensorSetting.descripcion2;
     jsonObjectSensor2["valor"] = sensorSetting.valor2;
@@ -125,35 +123,35 @@ void loop() {
             }
        }
 
-    JsonObject& jsonObjectSensor3 = root.createNestedObject("");
+    JsonObject& jsonObjectSensor3 = root.createNestedObject("s3");
     jsonObjectSensor3["id"] = sensorSetting.sensor3;
     jsonObjectSensor3["descripcion"] = sensorSetting.descripcion3;
     jsonObjectSensor3["valor"] = sensorSetting.valor3;
     jsonObjectSensor3["valorSet"] = sensorSetting.valorSet3;
 
     root.printTo(Serial);
+    Serial.println();
     
   }
 
   if(Serial.available())
   {
-      String jsonString = "";
+     /* String jsonString = "";
       char character;
 
       while(Serial.available()) {
         character = Serial.read();
         jsonString.concat(character);
-     }
-
+     } */
+    
      StaticJsonBuffer<200> jsonBuffer;
-     JsonObject& jsonData = jsonBuffer.parseObject(jsonString);
+     //JsonObject& jsonData = jsonBuffer.parseObject(jsonString);
+     JsonObject& jsonData = jsonBuffer.parse(Serial);
+     
 
-     if (!jsonData.success())
+     if (jsonData.success())
      {
-        Serial.println("parseObject() failed");
-     }
-
-     int idSensor = jsonData["id"];
+         int idSensor = jsonData["id"];
      switch (idSensor)
      {
         case 1:
@@ -171,6 +169,12 @@ void loop() {
         default:
               break;            
      }
+     EEPROM.put(0,sensorSetting);
+     } else {
+      Serial.println("parseObject() failed ");
+      }
+
+  
   }
   
 }

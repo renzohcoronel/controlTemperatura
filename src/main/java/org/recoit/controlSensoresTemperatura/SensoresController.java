@@ -1,10 +1,18 @@
 package org.recoit.controlSensoresTemperatura;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class SensoresController {
@@ -13,12 +21,15 @@ public class SensoresController {
 		
 	List<SensorTemperatura> sensores;
 	
+	
 	public SensoresController() {
 		serial = new Serial();
-		
-		SensorTemperatura s1 = new SensorTemperatura(1, "Heladera 1", Double.valueOf(15), Double.valueOf(19));
-		SensorTemperatura s2 = new SensorTemperatura(2, "Heladera 2", Double.valueOf(16), Double.valueOf(13));
-		SensorTemperatura s3 = new SensorTemperatura(3, "Heladera 3", Double.valueOf(12), Double.valueOf(14));
+		/*
+		 * Cuando se inicie si arduino no envio nada, deberian quedar vacio los sensores.6	
+		 * */
+		SensorTemperatura s1 = new SensorTemperatura(1, "None", Double.valueOf(0), Double.valueOf(0));
+		SensorTemperatura s2 = new SensorTemperatura(2, "None", Double.valueOf(0), Double.valueOf(0));
+		SensorTemperatura s3 = new SensorTemperatura(3, "None", Double.valueOf(0), Double.valueOf(0));
 		sensores = new ArrayList<>();
 		sensores.add(s1);
 		sensores.add(s2);
@@ -27,10 +38,23 @@ public class SensoresController {
 		(new Thread(serial)).start();
 	}
 	
-	@Scheduled(fixedRate = 1000)
+	@Scheduled(fixedRate = 2000)
 	public void readPort(){		
-		
-		String value  = serial.readPort();
+		 String json;
+		 if((json  = serial.readPort())!=null){
+			 ObjectMapper mapper = new ObjectMapper();
+			try {
+				
+				JsonNode jsonNodes = mapper.readTree(json);
+				sensores.clear();
+				sensores.add(mapper.readValue(jsonNodes.get("s1").toString(), new TypeReference<SensorTemperatura>(){}));
+				sensores.add(mapper.readValue(jsonNodes.get("s2").toString(), new TypeReference<SensorTemperatura>(){}));
+				sensores.add(mapper.readValue(jsonNodes.get("s3").toString(), new TypeReference<SensorTemperatura>(){}));
+				System.out.println(sensores.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+		 }
 		
 		
 
@@ -49,6 +73,17 @@ public class SensoresController {
 			if(sensorTemperatura.getId().equals(sensor.getId())){
 					sensorTemperatura.setValorSet(sensor.getValorSet());
 					sensorTemperatura.setDescripcion(sensor.getDescripcion());
+					ObjectMapper mapper = new ObjectMapper();
+					String jsonInString;
+					try {
+						jsonInString = mapper.writeValueAsString(sensorTemperatura);
+						System.out.println("Enviando a aruino : " + jsonInString);
+						serial.write(jsonInString);
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 			}
 		
 		}

@@ -4,7 +4,7 @@ import com.fazecast.jSerialComm.SerialPort;
 
 public class Serial implements Runnable {
 	
-	private String port = "/dev/pts/3";
+	private String port = "/dev/ttyACM0";
 	SerialPort comPort;
 	
 	public Serial(){
@@ -28,12 +28,16 @@ public class Serial implements Runnable {
 	
 	
 	public String readPort(){
-
-		byte[] readBuffer = new byte[comPort.bytesAvailable()];
-	    int numRead = comPort.readBytes(readBuffer, readBuffer.length);
-	    String mgs = new String(readBuffer);
-	    if(mgs.length()>1)
-	    	System.out.println(mgs);
+		
+		String mgs = null;
+		if(comPort.bytesAvailable()>0){
+			System.out.println("Leido : ");
+			byte[] readBuffer = new byte[comPort.bytesAvailable()];
+		    int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+		    mgs = new String(readBuffer);
+		    System.out.println(mgs);
+			
+		}
 	    return mgs;
 	}
 	

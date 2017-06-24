@@ -2,16 +2,19 @@ package org.recoit.controlSensoresTemperatura;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class SensorTemperatura {
 
 	private Integer id;
 	private String descripcion;
 	private Double valor;
 	private Double valorSet;
+	@JsonIgnore
 	private Date timestamp;
 	
 	public SensorTemperatura(){
-		
+		this.timestamp = new Date();
 	}
 
 	
