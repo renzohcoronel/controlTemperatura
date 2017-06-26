@@ -1,13 +1,16 @@
-package org.recoit.controlSensoresTemperatura;
+package org.recoit.controlSensoresTemperatura.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.recoit.controlSensoresTemperatura.model.MessageSockect;
+import org.recoit.controlSensoresTemperatura.model.SensorTemperatura;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,13 +18,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
+@RequestMapping("/")
 public class SensoresController {
 	
 	Serial serial;
-		
 	List<SensorTemperatura> sensores;
 	
-	
+
+
 	public SensoresController() {
 		serial = new Serial();
 		/*
@@ -55,7 +59,7 @@ public class SensoresController {
 				e.printStackTrace();
 			} 
 		 }
-		
+
 		
 
 	}
@@ -91,8 +95,10 @@ public class SensoresController {
 
 	public List<SensorTemperatura> getSensores() {
 		return sensores;
-	}	
+	}
 	
+	
+
 	
 
 }

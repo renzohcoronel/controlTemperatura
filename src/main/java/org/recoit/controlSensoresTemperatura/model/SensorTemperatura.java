@@ -1,4 +1,4 @@
-package org.recoit.controlSensoresTemperatura;
+package org.recoit.controlSensoresTemperatura.model;
 
 import java.util.Date;
 

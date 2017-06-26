@@ -1,4 +1,4 @@
-package org.recoit.controlSensoresTemperatura;
+package org.recoit.controlSensoresTemperatura.controller;
 
 import com.fazecast.jSerialComm.SerialPort;
 
