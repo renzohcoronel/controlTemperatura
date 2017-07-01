@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.recoit.controlSensoresTemperatura.model.MessageSockect;
 import org.recoit.controlSensoresTemperatura.model.SensorTemperatura;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,13 +16,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
+@EnableAutoConfiguration
 @RequestMapping("/")
 public class SensoresController {
 	
 	Serial serial;
 	List<SensorTemperatura> sensores;
-	
-
 
 	public SensoresController() {
 		serial = new Serial();

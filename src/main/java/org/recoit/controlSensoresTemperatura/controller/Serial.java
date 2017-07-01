@@ -25,8 +25,7 @@ public class Serial implements Runnable {
 				System.out.println("Puerto abierto " + port);
 			}
     }
-	
-	
+		
 	public String readPort(){
 		
 		String mgs = null;

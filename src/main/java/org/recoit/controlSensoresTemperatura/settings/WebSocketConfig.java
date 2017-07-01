@@ -18,12 +18,14 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 	
 	  @Override
 	    public void configureMessageBroker(MessageBrokerRegistry config) {
+		  System.out.println("configuro un endpoir socket");
 	        config.enableSimpleBroker("/topic");
 	        config.setApplicationDestinationPrefixes("/app");
 	    }
 
 	    @Override
 	    public void registerStompEndpoints(StompEndpointRegistry registry) {
+	    	System.out.println("Registro un endpoir socket");
 	    	registry.addEndpoint("/sensoresSocket").setAllowedOrigins("*");
 	    	registry.addEndpoint("/sensoresSocket").setAllowedOrigins("*").withSockJS();
 	    }
