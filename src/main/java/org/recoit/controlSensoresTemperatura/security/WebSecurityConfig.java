@@ -23,8 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		  System.out.println("Request para cazar!");
 	    http.csrf().disable().authorizeRequests()
 	        .antMatchers("/").permitAll()
-	        .antMatchers(HttpMethod.POST, "/login").permitAll()
-	        .anyRequest().authenticated()
+	        .antMatchers(HttpMethod.POST,"/login").permitAll().anyRequest().authenticated()
 	        .and()// Add CORS Filter
 	        .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
 	        // We filter the api/login requests
@@ -33,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        // And filter other requests to check the presence of JWT in header
 	        .addFilterBefore(new JWTAuthenticationFilter(),
 	                UsernamePasswordAuthenticationFilter.class);
+	    
+	    	http.authorizeRequests().antMatchers("/resources/**").permitAll().anyRequest().permitAll();
 	  }
 
 	  @Override
@@ -55,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	      config.addAllowedOrigin("*");
 	
-	      config.addAllowedHeader("Content-Type");
+	      config.addAllowedHeader("*");
 	
 	//      config.addAllowedMethod("OPTIONS");
 	
